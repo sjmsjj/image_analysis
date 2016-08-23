@@ -35,6 +35,7 @@ class ImageBase(object):
 
 	def create_output_data_dir(self):
 		path = self.image_dir + '/' + self.dir_name
+
 		if not os.path.exists(path):
 			try:
 				os.makedirs(path)
@@ -46,6 +47,8 @@ class ImageBase(object):
 
 	def get_all_images(self):
 		for root, directories, files in os.walk(self.image_dir):
+			if root == self.output_data_dir:
+				continue
 			for filename in files:
 				if filename.endswith(('.JPG', '.jpg', '.TIF', '.tif')):
 					filepath = os.path.join(root, filename)
@@ -125,4 +128,4 @@ class ImageBase(object):
 
 	def fetch_entry(self):
 		self.dir_entry.delete(0)
-		self.dir_entry.insert(0, tkFileDialog.askdirectory(initial=os.getcwd()))
+		self.dir_entry.insert(0, tkFileDialog.askdirectory(initialdir=os.getcwd()))
