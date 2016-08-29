@@ -17,10 +17,8 @@ from Tkinter import *
 import Tkinter, Tkconstants, tkFileDialog
 
 class ImageBase(object):
-
 	MICRO_TO_PIXEL = 1.6098
 	diameter = 400
-
 	output_data_dir = None
 	dir_name = None
 	images = None

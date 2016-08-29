@@ -8,8 +8,6 @@ from imgBase import ImageBase
 
 class ImageCrop(ImageBase):
 	dir_name = 'cropped_images'
-	pre_image = None
-	curr_image = None
 
 	def __init__(self, *args, **kwargs):
 		super(ImageCrop, self).__init__(*args, **kwargs)
