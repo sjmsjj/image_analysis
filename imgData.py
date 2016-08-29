@@ -8,16 +8,12 @@ from skimage.filters import threshold_otsu
 
 class PatternIntensity(ImageBase):
 	dir_name = 'data'
-	df_mold = None
-	curr_df = None
-	pre_image = None
-	curr_image = None
 	channel = None
 	dist2xys = None
 
 	def __init__(self, *args, **kwargs):
 		super(PatternIntensity, self).__init__(*args, **kwargs)
-		# self.calculate_intensity()
+		self.calculate_intensity()
 
 	def get_things_ready(self):
 		super(PatternIntensity, self).get_things_ready()
@@ -64,48 +60,6 @@ class PatternIntensity(ImageBase):
 			writer.writerow(('distance', channel))
 			for dist, intensity in zip(self.dist_list, intensity_values):
 				writer.writerow((dist, intensity))
-
-
-
-	# def get_image_intensity(self, image_path):
-	# 	image = self.get_gray_images(image_path)
-	# 	for index in self.curr_df.index:
-	# 		for row, col in self.dist2xys[index]:
-	# 			self.curr_df.loc[index][self.channel] += image[row][col]
-
-	# def save_data(self):
-	# 	file_name = self.pre_image + '.csv'
-	# 	self.curr_df = self.curr_df.div(self.curr_df['count'], axis=0)
-	# 	self.curr_df.drop('count', axis=1, inplace=True)
-	# 	self.curr_df.to_csv(os.path.join(self.output_data_dir, file_name))
-
-	# def get_new_df(self):
-	# 	self.curr_df = self.df_mold.copy(deep=True)
-	# 	self.curr_df[self.channel] = 0
-	# 	return self.curr_df
-
-	# def create_df_mold(self):
-	# 	if self.df_mold is None:
-	# 		map_entry = sorted(self.dist2xys.items(), key=lambda item: item[0])
-	# 		index = [entry[0] for entry in map_entry]
-	# 		counts = [len(entry[1]) for entry in map_entry]
-	# 		self.df_mold = pd.DataFrame(counts, index=index, columns=['counts'])
-	# 	return self.df_mold
-
-	# def create_df_mold(self):
-	# 	if not self.df_mold:
-	# 		pixels = int(self.diameter * self.MICRO_TO_PIXEL)
-	# 		center = pixels/2
-	# 		distances = {}
-	# 		for row in xrange(pixels):
-	# 			for col in xrange(pixels):
-	# 				index = np.power(row-center, 2) + np.power(col-center, 2)
-	# 				distances[index] = distances.get(index, 0) + 1
-	# 		items = sorted(distances.items(), key=lambda item:item[0])
-	# 		index = [item[0] for item in items]
-	# 		counts = [item[1] for item in items]
-	# 		self.df_mold = pd.DataFrame(counts, index=index, columns=['count'])
-	# 	return self.df_mold
 
 if __name__ == '__main__':
 	t = PatternIntensity()

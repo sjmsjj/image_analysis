@@ -4,7 +4,7 @@ from scipy import misc
 from scipy.ndimage.morphology import binary_closing, binary_fill_holes
 from skimage.measure import label, regionprops
 from skimage.morphology import disk
-from skiimage.filters import threshold_otsu
+from skimage.filters import threshold_otsu
 from PIL import Image
 import matplotlib.pyplot as plt 
 import numpy as np
