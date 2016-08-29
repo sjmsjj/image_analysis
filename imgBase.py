@@ -17,12 +17,12 @@ import Tkinter, Tkconstants, tkFileDialog
 class ImageBase(object):
 
 	MICRO_TO_PIXEL = 1.6098
-#	MICRO_TO_PIXEL = 1.6098*2
 	diameter = 400
 
 	output_data_dir = None
 	dir_name = None
 	images = None
+	base_channel = 'c3'
 
 	def __init__(self):
 		self.get_input_information()
@@ -34,8 +34,7 @@ class ImageBase(object):
 		self.images = self.get_all_images()
 
 	def create_output_data_dir(self):
-		path = self.image_dir + '/' + self.dir_name
-
+		path = os.path.join(self.image_dir, self.dir_name)
 		if not os.path.exists(path):
 			try:
 				os.makedirs(path)
@@ -49,10 +48,30 @@ class ImageBase(object):
 		for root, directories, files in os.walk(self.image_dir):
 			if root == self.output_data_dir:
 				continue
-			for filename in files:
-				if filename.endswith(('.JPG', '.jpg', '.TIF', '.tif')):
-					filepath = os.path.join(root, filename)
-					yield filepath, filename
+			for filename in sorted(filter(self.file_filter, files), cmp=self.sort_files):
+				filepath = os.path.join(root, filename)
+				yield filepath, filename
+
+	def file_filter(self, filename):
+		if filename.endswith(('.JPG', '.jpg', '.TIF', '.tif')):
+			return True
+		return False
+
+	def sort_files(self, fname1, fname2):
+		group1, channel1= fname1.split('.')[0].split('_')
+		group2, channel2 = fname2.split('.')[0].split('_')
+		if group1 != group2:
+			if group1 > group2:
+				return 1
+			else:
+				return -1
+		else:
+			if channel1 == self.base_channel:
+				return -1
+			elif channel2 == self.base_channel:
+				return 1
+			else:
+				return 0
 
 	def get_images(self, image_name):
 		raw_img = self.get_raw_images(image_name)
@@ -89,7 +108,7 @@ class ImageBase(object):
 		return self.top, self.bottom, self.left, self.right
 
 	def get_cropped_image(self, gray_img):
-		return gray_img[self.top:self.bottom, self.left:self.right]
+		return gray_img[self.top:self.bottom+1, self.left:self.right+1]
 
 	def get_input_information(self):
 		root = tk.Tk()

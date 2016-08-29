@@ -34,7 +34,7 @@ class ImageDataProcess(ImageBase):
 			self.save_data(reduced_data, file_name)
 
 	def save_data(self, data, file_name):
-		data.to_csv(self.output_data_dir+'/'+file_name)
+		data.to_csv(os.path.join(self.output_data_dir, file_name))
 
 	def get_image_data_files(self):
 		for root, directories, files in os.walk(self.data_dir):

@@ -16,18 +16,20 @@ class ImageCrop(ImageBase):
 		self.crop_images()
 
 	def crop_images(self):
+		pre_group = None
+		curr_group = None
 		for image_path, image_name in self.images:
-			self.curr_image = image_name.split('.')[0].split('_')[0]
+			print image_name
+			curr_group = image_name.split('.')[0].split('_')[0]
 			raw_image, _, closed_image = self.get_images(image_path)
-			if not self.pre_image or self.pre_image != self.curr_image:
+			if not pre_group or pre_group != curr_group:
 				self.get_pattern_centroid(closed_image)
 				self.get_pattern_border(closed_image)
 			cropped_image = self.get_cropped_image(raw_image)
 			self.save_image(cropped_image, image_name)
-			self.pre_image = self.curr_image
+			pre_group = curr_group
 
 	def save_image(self, image, image_name):
-		print image_name
 		misc.imsave(self.output_data_dir +'/' + image_name, image)
 
 if __name__ == '__main__':
