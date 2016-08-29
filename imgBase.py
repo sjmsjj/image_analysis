@@ -3,6 +3,8 @@ matplotlib.use("TkAgg")
 from scipy import misc 
 from scipy.ndimage.morphology import binary_closing, binary_fill_holes
 from skimage.measure import label, regionprops
+from skimage.morphology import disk
+from skiimage.filters import threshold_otsu
 from PIL import Image
 import matplotlib.pyplot as plt 
 import numpy as np
@@ -87,10 +89,12 @@ class ImageBase(object):
 		return misc.imread(image_name, flatten=True)
 
 	def get_binary_images(self, gray_img):
-		return (gray_img > gray_img.mean())*255
+		global_thresh = threshold_otsu(gray_img)
+		return (gray_img > global_thresh)*255
 
 	def get_closed_images(self, binary_img):
-		return binary_fill_holes(binary_closing(binary_img))
+		selem = disk(10)
+		return binary_fill_holes(binary_closing(binary_img, selem))
 
 	def get_pattern_centroid(self, closed_img):
 		labeled_img = label(closed_img)
