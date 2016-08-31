@@ -97,8 +97,8 @@ class ImageBase(object):
 	def get_pattern_centroid(self, closed_img):
 		labeled_img = label(closed_img)
 		regions = regionprops(labeled_img)
-		circle = max(regions, key=lambda item: item.area)
-		y, x = circle.centroid
+		self.circle = max(regions, key=lambda item: item.area)
+		y, x = self.circle.centroid
 		self.centroid = np.array([int(x), int(y)])
 		return self.centroid
 
