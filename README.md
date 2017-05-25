@@ -14,14 +14,5 @@ imgData.py
 	Generate the radial intensity profile of cropped images under a dir. 
 	It writes the intensity profile into a .csv file for each image.
 
-imgDataProcess.py
-	What is this Jianming?
-
 imgObserve.py
 	Observe individual images under microscope. Operations include plotting raw_img, binary_img, closed_img, centroid, histogram, etc. 
-
-imgPlot.py
-	What is this, Jianming?
-
-mclick.py
-	What is this, Jianming?
